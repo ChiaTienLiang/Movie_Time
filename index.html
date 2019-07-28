@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Add icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Movie Time</title>
+    <style>
+        div {
+            background-color: teal;
+            font: 20px Microsoft JhengHei;
+            padding: 10px 0px;
+            border-radius: 10px;
+            text-align: center;
+            width: 500px;
+            margin: auto;
+            margin-top: 20px;
+
+        }
+
+        a {
+            font-family: Microsoft JhengHei;
+        }
+
+        select {
+
+            width: 60%;
+            height: 40px;
+            font-family: Microsoft JhengHei;
+
+        }
+
+        span {
+            background-color: teal;
+            font-size: 20px;
+        }
+
+        i {
+            padding: 10px;
+            background: teal;
+            color: white;
+            min-width: 50px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+    <div style="height:70%">
+        <ul class="nav nav-tabs nav-fill mb-3">
+            <li class="nav-item">
+                <a class="nav-link text-light" href="#">快速訂票</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-light" href="#">快搜空位</a>
+            </li>
+        </ul>
+
+        <div>
+            <!-- <ion-icon style="color: white;" name="pin"></ion-icon> -->
+            <i class="fa fa-map-marker icon"></i>
+            <select id="select_location" onchange="change_loc(this.index)">
+                <option value="" id=select disabled selected>請選擇影城</option>
+            </select>
+        </div>
+        <div>
+
+            <!-- <ion-icon style="color: white;" name="videocam"></ion-icon> -->
+            <i class="fa fa-video-camera icon"></i>
+            <select id="select_movie">
+                <option value="" disabled selected>請選擇影片</option>
+            </select>
+
+        </div>
+        <div>
+
+            <!-- <ion-icon style="color: white;" name="calendar"></ion-icon> -->
+            <i class="fa fa-calendar icon"></i>
+            <select id="select_date">
+                <option value="" disabled selected>請選擇日期</option>
+            </select>
+
+        </div>
+    </div>
+    <!-- 全省威秀影城隔週電影新場次公布於每週二晚間23:59 -->
+    <!-- (假設週二整天只能查到：週二 週三 週四) -->
+    <!-- 會開放未來一週(週三會查到：今天到下星期四)之場次 -->
+    <script>
+        //list1 為JSON格式 需使用 var obj = JSON.parse(list);  
+        // var list1 = '{ "movie" : [' +
+        //     '{ "location":"台北信義威秀影城" , "program":["玩命關頭","寄生上流","出走巴黎","從前有個好萊塢","聖哥傳","獅子王","蜘蛛人：離家日","玩具總動員"] },' +
+        //     '{ "location":"台北京站威秀影城" , "program":["玩命關頭","寄生上流","出走巴黎","從前有個好萊塢"] },' +
+        //     '{ "location":"台北日新威秀影城" , "program":["寄生上流","從前有個好萊塢","聖哥傳"] },' +
+        //     '{ "location":"板橋大遠百威秀影城" , "program":["獅子王","蜘蛛人：離家日","玩具總動員"] },' +
+        //     '{ "location":"台中大遠百威秀影城" , "program":["全職高手:巔峰榮耀","遊戲人生ZERO","吹響吧!上低音號:莉茲與青鳥","我的英雄學院:兩人的英雄","為美好的世界獻上祝福:紅傳說","進擊的巨人:覺醒的咆哮"] },' +
+        //     '{ "location":"台中TIGER CITY威秀影城" , "program":["名偵探柯南：紺青之拳","名偵探柯南：零的執行人","名偵探柯南：唐紅的戀歌","名偵探柯南：純黑的惡夢","名偵探柯南：業火的向日葵","名偵探柯南：異次元的狙擊手","名偵探柯南：魯邦VS柯南"] },' +
+        //     '{ "location":"台南大遠百威秀影城" , "program":["聖哥傳","獅子王","名偵探柯南：紺青之拳","玩具總動員"] } ]}';
+
+
+        //list2為物件 可直接使用
+        var list2 = {"movie" : [{
+                "location": "台北信義威秀影城",
+                "program": ["玩命關頭", "寄生上流", "出走巴黎", "從前有個好萊塢", "聖哥傳", "獅子王", "蜘蛛人：離家日", "玩具總動員"]
+            },
+            {
+                "location": "台北京站威秀影城",
+                "program": ["玩命關頭", "寄生上流", "出走巴黎", "從前有個好萊塢"]
+            }, {
+                "location": "台北日新威秀影城",
+                "program": ["寄生上流", "從前有個好萊塢", "聖哥傳"]
+            }, {
+                "location": "板橋大遠百威秀影城",
+                "program": ["獅子王", "蜘蛛人：離家日", "玩具總動員"]
+            }, {
+                "location": "台中大遠百威秀影城",
+                "program": ["全職高手:巔峰榮耀", "遊戲人生ZERO", "吹響吧!上低音號:莉茲與青鳥", "我的英雄學院:兩人的英雄", "為美好的世界獻上祝福:紅傳說", "進擊的巨人:覺醒的咆哮"]
+            }, {
+                "location": "台中TIGER CITY威秀影城",
+                "program": ["名偵探柯南：紺青之拳", "名偵探柯南：零的執行人", "名偵探柯南：唐紅的戀歌", "名偵探柯南：純黑的惡夢", "名偵探柯南：業火的向日葵", "名偵探柯南：異次元的狙擊手",
+                    "名偵探柯南：魯邦VS柯南"
+                ]
+            }, {
+                "location": "台南大遠百威秀影城",
+                "program": ["聖哥傳", "獅子王", "名偵探柯南：紺青之拳", "玩具總動員"]
+            }]};
+
+        //var obj = JSON.parse(list);
+
+        //console.log(list.movie);
+        //  console.log(obj.movie[0].length);
+        //  console.log(obj.movie[2].location);
+        // console.log(obj.movie[0].program);
+
+        //$("#select_location").each(function (index) {
+        for (var i = 0; i < list2.movie.length; i++) {
+            $("#select_location").append(`<option value= ${i}> ${list2.movie[i].location}</option>`);
+        }
+        //});
+
+        function change_loc(index) {
+            $("#select_movie").empty();
+            $("#select_movie").append(`<option value="" disabled selected >請選擇影片</option>`);
+            var result = "";
+            var temp = $("select").prop("value");
+            //console.log(temp)
+            // console.log(obj.movie[0].program);
+            //$("#select_movie").each(function (index) {
+            for (var i = 0; i <list2.movie[temp].program.length; i++) {
+                // result += `<option value="${i}"> ${obj.movie[temp].program[i]}</option>`;
+                $("#select_movie").append(`<option value=${i}> ${list2.movie[temp].program[i]}</option>`);
+            }
+            // $("#select_movie").append(result);
+            //});
+
+
+        }
+
+        //===========================================================================分隔線
+
+        var d = new Date();
+        var date_list = "";
+
+        // d.setDate(d.getDate());
+        var today_year = d.getFullYear();
+        var today_month = d.getMonth() + 1;
+        var today_date = d.getDate();
+        var today = d.getDay();
+        var today_hours = d.getHours();
+        var today_min = d.getMinutes();
+
+        d.setMonth(d.getMonth() + 1);
+        d.setDate(1);
+        d.setDate(d.getDate() - 1);
+        var last_date = d.getDate();
+
+        //console.log(last_date); 
+        $("#select_date").each(function (index) {
+            if (today >= 3 || (today == 2 && today_hours == 23 && today_min == 59)) {
+                for (var i = 0; i <= 6 - (today - 3); i++) {
+                    if (today_date + i <= last_date) {
+                        date_list +=
+                            `<option>${today_year}/${today_month}/${today_date+i}</option>`;
+                    } else {
+                        date_list +=
+                            `<option>${today_year}/${today_month+1}/${today_date+i-last_date}</option>`;
+                    }
+                }
+            } else if (today < 3) {
+                for (var i = 0; i <= 2 - today; i++) {
+                    if (today_date + i <= last_date) {
+                        date_list +=
+                            `<option>${today_year}/${today_month}/${today_date+i}</option>`;
+                    } else {
+                        date_list +=
+                            `<option>${today_year}/${today_month+1}/${today_date+i-last_date}</option>`;
+                    }
+
+                }
+
+            }
+            $("#select_date").append(date_list);
+        });
+    </script>
+
+
+
+
+</body>
+
+</html>
