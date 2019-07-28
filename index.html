@@ -196,7 +196,7 @@
         //console.log(last_date); 
         $("#select_date").each(function (index) {
             if (today >= 3 || (today == 2 && today_hours == 23 && today_min == 59)) {
-                for (var i = 0; i <= 6 - (today - 3); i++) {
+                for (var i = 0; i < 3+7-today; i++) {
                     if (today_date + i <= last_date) {
                         date_list +=
                             `<option>${today_year}/${today_month}/${today_date+i}</option>`;
@@ -206,7 +206,7 @@
                     }
                 }
             } else if (today < 3) {
-                for (var i = 0; i <= 2 - today; i++) {
+                for (var i = 0; i < 3 - today; i++) {
                     if (today_date + i <= last_date) {
                         date_list +=
                             `<option>${today_year}/${today_month}/${today_date+i}</option>`;
